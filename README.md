@@ -18,11 +18,10 @@ The primary objective of this project was to implement Run-Length Encoding (RLE)
 The Mechanics of the Task
 The core task revolves around identifying "runs"—sequences where the same data value occurs in many consecutive data elements.1 RLE stores a single data value and count, rather than the original run.
 Compression Phase: The program reads the input text file byte-by-byte. It utilizes a look-ahead mechanism (peeking at the next character) to determine if a sequence is continuing. For example, if the program encounters "AAAAA", it registers five instances of 'A'. Instead of writing five distinct bytes to the disk, it writes two: the character 'A' and the integer '5'. This significantly reduces file size for repetitive data.2 The logic handles the EOF (End of File) condition gracefully to ensure the final sequence is recorded before execution terminates.
-
-
 Decompression Phase: The tool reverses the process by reading pairs of data: a character followed by an integer. It then utilizes a loop to reconstruct the original stream, printing the character $n$ times (where $n$ is the integer read).
 Complexity Analysis
 The algorithmic complexity of this task is linear, or 3$O(n)$, where 4$n$ is the number of characters in the input file.5 The program makes a single pass over the data for both compression and decompression, making it highly efficient for streaming operations.
+
 
 2. Tools Used
 To achieve this implementation, specific software tools and standard libraries were utilized.
@@ -32,12 +31,8 @@ Compiler: GCC (GNU Compiler Collection)7
 The code is designed to be compiled with GCC, the standard compiler for Unix-like systems.8 The command gcc rle_tool.c -o rle invokes the compiler to translate the high-level C code into machine-readable binary instructions.
 Standard Libraries:
 <stdio.h>: Used for input/output operations.9 Functions like fopen, fgetc, fprintf, and fscanf are critical for reading from the source file and writing to the destination.10
-
-
 <stdlib.h>: Included for general utility, standardizing types, and potential memory management (though stack allocation was sufficient for this specific iteration).11
-
-
-<string.h>: Utilized for the strcmp function, which allows the program to parse command-line arguments (checking if the user typed -c or -d).12
+<string.h>: Utilized for the strcmp function, which allows the program to parse command-line arguments (checking if the user typed -c or -d)
 
 
 3. Editor Platform & Environment
@@ -46,23 +41,24 @@ Text Editors: The code is platform-agnostic but is best written in code-centric 
 Operating System: While C is portable, this specific implementation uses standard command-line arguments (argc, argv), making it most at home in a Unix-based environment (Linux or macOS) or the Windows Command Prompt/PowerShell.
 Execution Environment (CLI): unlike graphical applications, this tool has no GUI. It runs entirely in the Terminal. This is crucial for automation; a user can script this tool to compress thousands of files in a loop without ever opening a window. The user interacts with the program by passing "flags" (arguments) at the moment of execution, a standard practice in systems programming.
 
+
 4. Applicability & Limitations
 Understanding where Run-Length Encoding is useful—and where it fails—is critical for any engineer implementing it.
 Real-World Applicability
 Bitmap Images: RLE is historically significant in image processing. It was the default compression method for Windows 3.0 bitmaps (.bmp) and the PCX file format.13 It works exceptionally well on images with large areas of solid color (like simple logos or line art), where a single pixel color might repeat for hundreds of pixels.14
-
-
 Fax Machines: The T.4 fax standard uses a variation of RLE (Modified Huffman coding) because fax documents are mostly white space. Compressing the white runs dramatically reduces transmission time.15
-
-
 Scientific Data: In experiments where sensors report a "steady state" for long periods (e.g., "0, 0, 0, 0..."), RLE can compress datasets by 90% or more.
 Limitations
 High Entropy Data: RLE performs poorly on data with high variance.16 If you attempt to compress a standard English essay or a photograph of a detailed landscape, the file size may actually increase. This is because "The quick brown fox" contains no repeating characters. RLE would encode "The" as "T1h1e1", doubling the size of the data.
-
-
 Numeric Ambiguity: As noted in the code description, this basic implementation struggles with files containing digits. Professional implementations solve this by using binary storage (writing the byte value of the number rather than the ASCII character) or by using "escape characters" to signal when a run count begins.
 
+
 *OUTPUT*:-
+
+
+<img width="1920" height="1008" alt="Image" src="https://github.com/user-attachments/assets/25e7cf6e-c67a-44be-8058-05450bcdc7c2" />
+
+
 
 
 
